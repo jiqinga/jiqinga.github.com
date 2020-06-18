@@ -374,11 +374,7 @@
                 <span>使用kubeadm快速安装kubernetes集群</span>
         </a>
         <div class="abstract-content">
-            安装前设置关闭防火墙12systemctl disabled firewalldsystemctl stop firewall
-
-关闭SELinux123setenforce 0sed -i 's/^SELINUX=enforcing$/SELINUX=disabled/' /etc/selinux/configreboot
-
-内核优化(防止kubeadm init报错)12echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;bridge&#x2F;bridge-nf-call-iptablesecho 1 &gt; &#x2F;proc&#x2F...
+            Install k8s
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
