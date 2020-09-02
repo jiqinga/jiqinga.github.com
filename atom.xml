@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.jiqinga.top/"/>
-  <updated>2020-09-01T08:23:17.447Z</updated>
+  <updated>2020-09-02T06:18:58.730Z</updated>
   <id>http://www.jiqinga.top/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>搭建内部DNS服务器.md</title>
+    <title>搭建内部DNS服务</title>
     <link href="http://www.jiqinga.top/2020/09/01/%E6%90%AD%E5%BB%BA%E5%86%85%E9%83%A8DNS%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     <id>http://www.jiqinga.top/2020/09/01/%E6%90%AD%E5%BB%BA%E5%86%85%E9%83%A8DNS%E6%9C%8D%E5%8A%A1%E5%99%A8/</id>
     <published>2020-09-01T08:14:26.000Z</published>
-    <updated>2020-09-01T08:23:17.447Z</updated>
+    <updated>2020-09-02T06:18:58.730Z</updated>
     
     <content type="html"><![CDATA[<h1 id="搭建内部DNS服务器"><a href="#搭建内部DNS服务器" class="headerlink" title="搭建内部DNS服务器"></a>搭建内部DNS服务器</h1><blockquote><p>使用dnsmasq搭建内部dns服务器,配置文件为dnsmasq.conf,修改本地nameserver为容器访问地址,浏览器可通过5380端口访问</p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cat dnsmasq.conf</span><br><span class="line"><span class="built_in">log</span>-queries</span><br><span class="line"><span class="built_in">log</span>-dhcp</span><br><span class="line">no-resolv</span><br><span class="line"></span><br><span class="line">server=114.114.114.144</span><br><span class="line">server=8.8.8.8</span><br><span class="line">strict-order</span><br><span class="line"><span class="comment"># 配置域名映射</span></span><br><span class="line">address=/docker.localhost/172.17.0.1</span><br><span class="line">address=/shanyue.local/172.17.0.1</span><br><span class="line">address=/aa.local/182.10.1.101</span><br></pre></td></tr></table></figure><h2 id="使用docker-compose进行部署"><a href="#使用docker-compose进行部署" class="headerlink" title="使用docker-compose进行部署"></a>使用docker-compose进行部署</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cat dnsmasq.yml</span><br><span class="line">version: <span class="string">'3'</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  dns:</span><br><span class="line">    image: jpillora/dnsmasq</span><br><span class="line">    restart: always</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="string">"53:53/udp"</span>    </span><br><span class="line">      - <span class="string">"5380:8080"</span></span><br><span class="line">    volumes:</span><br><span class="line">      - ./dnsmasq.conf:/etc/dnsmasq.conf</span><br><span class="line">    environment:</span><br><span class="line">      - HTTP_USER=foo  <span class="comment">#浏览器访问用户名密码</span></span><br><span class="line">      - HTTP_PASS=bar</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  default:</span><br><span class="line"><span class="comment">#创建服务</span></span><br><span class="line">docker-compose -f dnsmasq.yml up -d</span><br></pre></td></tr></table></figure>]]></content>
     
